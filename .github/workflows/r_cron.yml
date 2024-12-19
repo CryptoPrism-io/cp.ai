@@ -28,4 +28,4 @@ jobs:
       # Run R script 2
       - name: Run R script
         run: |
-          Rscript 108_1K_ohlcv.R
+          Rscript rscript_etl.R
