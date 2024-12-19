@@ -1,6 +1,8 @@
-name: Data fetch - DMV - to DB flow (R Only)
+name: hourly R script for hourly
 
 on:
+  schedule:
+    - cron: "1 * * * *"  # Daily at midnight UTC 
   workflow_dispatch: {}
 
 
@@ -20,7 +22,7 @@ jobs:
       # Install R packages
       - name: Install R packages
         run: |
-          Rscript -e 'install.packages(c("RMySQL", "crypto2","dplyr","DBI"))'
+          Rscript -e 'install.packages(c("RMySQL", "crypto2","dplyr","DBI","RPostgres"))'
 
 
       # Run R script 2
