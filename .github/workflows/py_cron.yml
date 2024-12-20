@@ -1,4 +1,4 @@
-name: pyScript-GCP_sandbox.env
+name: pyScript_1h
 
 on:
   schedule:
