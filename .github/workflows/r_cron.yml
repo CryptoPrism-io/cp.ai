@@ -1,4 +1,4 @@
-name: hourly R script for hourly
+name: Rscript_1h
 
 on:
   schedule:
