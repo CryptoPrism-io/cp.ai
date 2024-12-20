@@ -19,7 +19,7 @@ start_time = time.time()
 
 # GCP Database Connection Parameters
 db_host = "34.55.195.199"         # Public IP of your PostgreSQL instance on GCP
-db_name = "dbcp"                  # Database name
+db_name = "cp_ai"                  # Database name
 db_user = "yogass09"              # Database username
 db_password = "jaimaakamakhya"     # Database password
 db_port = 5432                    # PostgreSQL port
@@ -35,7 +35,6 @@ table_queries = {
     "ratios_bin": "SELECT * FROM \"FE_RATIOS_SIGNALS\"",
     "df_oscillator_bin": "SELECT * FROM \"FE_OSCILLATORS_SIGNALS\"",
     "df_momentum": "SELECT * FROM \"FE_MOMENTUM_SIGNALS\"",
-    "metrics_signal": "SELECT * FROM \"FE_METRICS_SIGNAL\"",
     "tvv_signals": "SELECT * FROM \"FE_TVV_SIGNALS\""
 }
 
@@ -51,7 +50,6 @@ with gcp_engine.connect() as connection:
 ratios_bin = data_frames["ratios_bin"]
 df_oscillator_bin = data_frames["df_oscillator_bin"]
 df_momentum = data_frames["df_momentum"]
-metrics_signal = data_frames["metrics_signal"]
 tvv_signals = data_frames["tvv_signals"]
 
 
@@ -63,7 +61,7 @@ tvv_signals = data_frames["tvv_signals"]
 
 # DMV DATA PREPARATION
 # List of DataFrames to join
-dfs_to_join = [ratios_bin, df_oscillator_bin, df_momentum, tvv_signals, metrics_signal]
+dfs_to_join = [ratios_bin, df_oscillator_bin, df_momentum, tvv_signals]
 
 # Perform the join, handling duplicate column names
 DMV = dfs_to_join[0]
