@@ -1,0 +1,38 @@
+name: pyScript-GCP_sandbox.env
+
+on:
+  schedule:
+    - cron: "5 * * * *"  # Daily at 00:30 UTC
+  workflow_dispatch: {}
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'  # Specify the Python version you need
+
+      # Install Python packages
+      - name: Install Python packages
+        run: |
+          pip install pandas numpy matplotlib seaborn mysql-connector-python sqlalchemy requests psycopg2-binary
+
+
+        
+      - name: Run gcp_trend_volume_volatility.py
+        run: python dmv_tvv_pct.py
+        continue-on-error: false
+
+      - name: Run gcp_osc_mom_rat.py
+        run: python dmv_osc_mom_rat.py
+        continue-on-error: false
+
+      - name: Run gcp_dmv_core.py
+        run: python dmv_core.py
+        continue-on-error: false
