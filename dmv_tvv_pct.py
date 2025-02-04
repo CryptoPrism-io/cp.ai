@@ -1,4 +1,4 @@
-eimport time
+import time
 start_time = time.time()
 
 # @title LIBRARY
