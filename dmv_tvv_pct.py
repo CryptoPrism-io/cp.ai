@@ -1,4 +1,4 @@
-import time
+eimport time
 start_time = time.time()
 
 # @title LIBRARY
@@ -466,3 +466,28 @@ gcp_engine.dispose()
 """# end of script
 
 """
+
+
+ # Connection parameters
+db_host = "34.55.195.199"         # Public IP of your PostgreSQL instance on GCP
+db_name = "cp_backtest_h"                  # Database name
+db_user = "yogass09"              # Database username
+db_password = "jaimaakamakhya"     # Database password
+db_port = 5432                    # PostgreSQL port
+
+# Create a SQLAlchemy engine for PostgreSQL
+gcp_engine = create_engine(f'postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}')
+
+# Write the DataFrame to a new table in the database
+tvv.to_sql('FE_TVV', con=gcp_engine, if_exists='append', index=False)
+# Write the DataFrame to a new table in the database
+tvv_signals.to_sql('FE_TVV_SIGNALS', con=gcp_engine, if_exists='append', index=False)
+
+# Write the DataFrame to a new table in the database
+pct_change.to_sql('FE_PCT_CHANGE', con=gcp_engine, if_exists='append', index=False)
+
+
+print("table name to db name append done")
+
+gcp_engine.dispose()
+
