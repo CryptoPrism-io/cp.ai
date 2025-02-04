@@ -329,6 +329,7 @@ momentum.to_sql('FE_MOMENTUM', con=gcp_engine, if_exists='replace', index=False)
 print("momentum DataFrame uploaded to AWS MySQL database successfully!")
 
 momentum.info()
+momentum_df=momentum
 
 # @title Momentum Binary Signals
 
