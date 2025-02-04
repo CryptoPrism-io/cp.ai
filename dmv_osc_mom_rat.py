@@ -1073,7 +1073,7 @@ ratios = ratios.replace([np.inf, -np.inf], np.nan) # Replace inf values before p
 
 # Write the DataFrame to a new table in the database
 ratios.to_sql('FE_RATIOS', con=gcp_engine, if_exists='replace', index=False)
-
+ratios_df=ratios
 print("FE_RATIOS DataFrame uploaded to AWS MySQL database successfully!")
 
 ratios.info()
