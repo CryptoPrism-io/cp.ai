@@ -1155,3 +1155,37 @@ gcp_engine.dispose()
 """# end of script
 
 """
+
+
+ # Connection parameters
+db_host = "34.55.195.199"         # Public IP of your PostgreSQL instance on GCP
+db_name = "cp_backtest_h"                  # Database name
+db_user = "yogass09"              # Database username
+db_password = "jaimaakamakhya"     # Database password
+db_port = 5432                    # PostgreSQL port
+
+# Create a SQLAlchemy engine for PostgreSQL
+gcp_engine = create_engine(f'postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}')
+
+# Write the DataFrame to a new table in the database
+oscillator.to_sql('FE_OSCILLATORS', con=gcp_engine, if_exists='append', index=False)
+# Write the DataFrame to a new table in the database
+df_oscillator_bin.to_sql('FE_OSCILLATORS_SIGNALS', con=gcp_engine, if_exists='append', index=False)
+
+# Write the DataFrame to a new table in the database
+ratios_df.drop(ratios_df.columns[16:27], axis=1, inplace=True)
+ratios_df.info()
+ratios_df.to_sql('FE_RATIOS', con=gcp_engine, if_exists='append', index=False)
+# Write the DataFrame to a new table in the database
+ratios_bin.to_sql('FE_RATIOS_SIGNALS', con=gcp_engine, if_exists='append', index=False)
+
+
+# Write the DataFrame to a new table in the database
+momentum_df.to_sql('FE_MOMENTUM', con=gcp_engine, if_exists='append', index=False)
+# Write the DataFrame to a new table in the database
+df_momentum.to_sql('FE_MOMENTUM_SIGNALS', con=gcp_engine, if_exists='append', index=False)
+
+
+print("table name to db name append done")
+
+gcp_engine.dispose()
