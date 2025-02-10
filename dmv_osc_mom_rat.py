@@ -612,9 +612,16 @@ df = df.groupby('slug').apply(calculate_trix).reset_index(level=0, drop=True)
 df.info(0)
 
 # @title SQLalchemy to push (FE) data to aws db (mysql)
+COLUMNS_TO_KEEP_MOMENTUM = [
+    'id', 'slug', 'name', 'timestamp', 'open', 'high', 'low', 'close', 'volume', 'market_cap', 
+    'm_pct_1d', 'm_mom_rsi_9', 'm_mom_rsi_18', 'm_mom_rsi_27', 'm_mom_rsi_54', 'm_mom_rsi_108', 
+    'sma_14', 'sma_14_normalized', 'm_mom_roc', 'm_mom_williams_%', 'm_mom_smi', 'm_mom_cmo', 
+    'm_mom_mom', 'm_mom_tsi'
+]
 
-# Drop columns by their index positions
-df.drop(df.columns[4:10], axis=1, inplace=True)
+df = df[COLUMNS_TO_KEEP_MOMENTUM]
+
+
 oscillator=df
 
 # Get the latest timestamp
