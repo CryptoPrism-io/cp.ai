@@ -307,8 +307,15 @@ df = df[df['timestamp'] >= start_date]
 
 # @title SQLalchemy to push (FE_SIGNALS) data to aws db (mysql)
 
-# Drop columns by their index positions
-df.drop(df.columns[4:10], axis=1, inplace=True)
+# @title SQLalchemy to push (FE) data to aws db (mysql)
+COLUMNS_TO_KEEP_MOMENTUM = [
+    'id', 'slug', 'name', 'timestamp', 'open', 'high', 'low', 'close', 'volume', 'market_cap', 
+    'm_pct_1d', 'm_mom_rsi_9', 'm_mom_rsi_18', 'm_mom_rsi_27', 'm_mom_rsi_54', 'm_mom_rsi_108', 
+    'sma_14', 'sma_14_normalized', 'm_mom_roc', 'm_mom_williams_%', 'm_mom_smi', 'm_mom_cmo', 
+    'm_mom_mom', 'm_mom_tsi'
+]
+
+df=df[COLUMNS_TO_KEEP_MOMENTUM]
 momentum=df
 
 # Get the latest timestamp
@@ -410,10 +417,13 @@ df_momentum = df
 df_momentum.info()
 
 # @title SQLalchemy to push (FE_SIGNALS) data to aws db (mysql)
+COLOUMS_TO_KEEP= ['id', 'slug', 'name', 'timestamp', 
+    'm_mom_roc_bin', 'm_mom_williams_%_bin', 'm_mom_smi_bin', 
+    'm_mom_cmo_bin', 'm_mom_mom_bin']
 
-# Drop columns by their index positions
-df_momentum.drop(df_momentum.columns[4:18], axis=1, inplace=True)
-momentum=df
+
+df_momentum=df_momentum[COLOUMS_TO_KEEP]
+
 
 # Get the latest timestamp
 latest_timestamp = df_momentum['timestamp'].max()
@@ -611,15 +621,6 @@ df = df.groupby('slug').apply(calculate_trix).reset_index(level=0, drop=True)
 
 df.info(0)
 
-# @title SQLalchemy to push (FE) data to aws db (mysql)
-COLUMNS_TO_KEEP_MOMENTUM = [
-    'id', 'slug', 'name', 'timestamp', 'open', 'high', 'low', 'close', 'volume', 'market_cap', 
-    'm_pct_1d', 'm_mom_rsi_9', 'm_mom_rsi_18', 'm_mom_rsi_27', 'm_mom_rsi_54', 'm_mom_rsi_108', 
-    'sma_14', 'sma_14_normalized', 'm_mom_roc', 'm_mom_williams_%', 'm_mom_smi', 'm_mom_cmo', 
-    'm_mom_mom', 'm_mom_tsi'
-]
-
-df = df[COLUMNS_TO_KEEP_MOMENTUM]
 
 
 oscillator=df
