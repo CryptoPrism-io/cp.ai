@@ -732,7 +732,7 @@ df_oscillator_bin.head()
 # @title SQLalchemy to push (FE_SIGNALS) data to aws db (mysql)
 
 # Drop columns by their index positions
-df_oscillator_bin.drop(df_oscillator_bin.columns[4:46], axis=1, inplace=True)
+df_oscillator_bin.drop(df_oscillator_bin.columns[4:52], axis=1, inplace=True)
 
 
 # Get the latest timestamp
