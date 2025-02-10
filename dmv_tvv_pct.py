@@ -433,8 +433,10 @@ import numpy as np
 # Drop columns with infinite values
 pct_change = pct_change.replace([np.inf, -np.inf], np.nan)
 
-# Drop columns 4 to 10
-pct_change = pct_change.drop(pct_change.columns[4:10], axis=1)
+# Column names to keep. PLEASE TRIPLE CHECK THESE ARE CORRECT AND MATCH the FE_PCT_CHANGE schema you want!
+COLUMNS_TO_KEEP = ['id', 'slug', 'name', 'timestamp', 'open', 'high', 'low', 'close', 'volume', 'market_cap', 'm_pct_1d', 'd_pct_cum_ret', 'd_pct_var', 'd_pct_cvar', 'd_pct_vol_1d']
+
+pct_change = pct_change[COLUMNS_TO_KEEP]
 
 
 
