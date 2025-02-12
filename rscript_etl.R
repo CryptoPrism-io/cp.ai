@@ -19,7 +19,7 @@ crypto.listings.latest <- crypto_listings(
 
 # Filter the data based on cmc_rank
 crypto.listings.latest<- crypto.listings.latest %>%
-  filter(cmc_rank > 0 & cmc_rank < 200)
+  filter(cmc_rank > 0 & cmc_rank < 250)
 
 all_coins<-crypto_history(coin_list = crypto.listings.latest,convert = "USD",limit = 200,
                           start_date = Sys.Date()-5,end_date = Sys.Date()+1,sleep = 0,interval="hourly")
@@ -56,6 +56,6 @@ if (dbIsValid(con)) {
 
 # Write dataframes to database
 dbWriteTable(con, "ohlcv_1h_250_coins", all_coins, overwrite = TRUE, row.names = FALSE)
-
+dbWriteTable(con, "crypto_listings_latest", crypto.listings.latest, overwrite = TRUE, row.names = FALSE)
 # Close connection
 dbDisconnect(con)
