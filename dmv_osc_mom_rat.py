@@ -649,6 +649,8 @@ print("oscillator DataFrame uploaded to AWS MySQL database successfully!")
 
 oscillator.info()
 
+oscillator_df_push_backtest=oscillator
+
 # @title Oscillator Binanry Signals
 # Drop the specified columns
 #df_bin = df.drop(columns=columns_to_drop, errors='ignore')
@@ -1175,6 +1177,9 @@ gcp_engine.dispose()
 
 """
 
+oscillator.info()
+oscillator_df_push_backtest.info()
+
 
  # Connection parameters
 db_host = "34.55.195.199"         # Public IP of your PostgreSQL instance on GCP
@@ -1185,9 +1190,9 @@ db_port = 5432                    # PostgreSQL port
 
 # Create a SQLAlchemy engine for PostgreSQL
 gcp_engine = create_engine(f'postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}')
-oscillator.info()
+
 # Write the DataFrame to a new table in the database
-oscillator.to_sql('FE_OSCILLATOR', con=gcp_engine, if_exists='append', index=False)
+oscillator_df_push_backtest.to_sql('FE_OSCILLATOR', con=gcp_engine, if_exists='append', index=False)
 # Write the DataFrame to a new table in the database
 df_oscillator_bin.to_sql('FE_OSCILLATORS_SIGNALS', con=gcp_engine, if_exists='append', index=False)
 
