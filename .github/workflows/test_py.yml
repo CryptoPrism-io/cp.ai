@@ -26,5 +26,5 @@ jobs:
 
         
       - name: Run gcp_osc_mom_rat.py
-        run: python dmv_tvv_pct.py
+        run: python dmv_osc_mom_rat.py
         continue-on-error: false
