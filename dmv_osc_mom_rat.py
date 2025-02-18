@@ -1177,8 +1177,18 @@ gcp_engine.dispose()
 
 """
 
-oscillator.info()
-oscillator_df_push_backtest.info()
+COLUMNS_TO_KEEP = [
+    'id', 'slug', 'name',  'timestamp', 
+    'open', 'high', 'low', 'close', 'volume', 'market_cap', 
+    'm_pct_1d', 'd_pct_cum_ret', 'EMA_12', 'EMA_26', 'MACD', 'Signal', 
+    'TP', 'SMA_TP', 'MAD', 'CCI', 'TR', '+DM', '-DM', 'Smoothed_TR', 
+    'Smoothed_+DM', 'Smoothed_-DM', '+DI', '-DI', 'DX', 'ADX', 'prev_close', 
+    'BP', 'Avg_BP_short', 'Avg_TR_short', 'Avg_BP_intermediate', 
+    'Avg_TR_intermediate', 'Avg_BP_long', 'Avg_TR_long', 'UO', 'MP', 
+    'SMA_5', 'SMA_34', 'AO', 'EMA1', 'EMA2', 'EMA3', 'TRIX'
+]
+
+oscillator_df_push_backtest=oscillator[COLUMNS_TO_KEEP]
 
 
  # Connection parameters
