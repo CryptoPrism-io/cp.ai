@@ -1,4 +1,4 @@
-name: TEST_PY_GCP.env
+name: test_gcp_hourly
 
 on:
   schedule:
