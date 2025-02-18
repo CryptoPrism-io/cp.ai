@@ -477,6 +477,9 @@ print(f"Cell execution time: {elapsed_time_minutes:.2f} minutes")
 
 """
 
+tvv.info()
+tvv_signals.info()
+pct_change.info()
 
 
  # Connection parameters
