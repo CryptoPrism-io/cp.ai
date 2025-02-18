@@ -65,7 +65,6 @@ with gcp_engine.connect() as connection:
 
 gcp_engine.dispose()
 
-
 # prompt: all_coins_ohlcv_filtered.info() count unique slugs
 
 all_coins_ohlcv_filtered.info()
@@ -269,6 +268,14 @@ a.info()
 
 # @title SQLalchemy to push (FE) data to aws db (mysql)
 
+
+# @title TVV Binary Signals
+columns_to_drop = [ 'ref_cur_id', 'ref_cur_name', 'time_open',
+                   'time_close', 'time_high', 'time_low']
+
+# Drop the specified columns
+df = df.drop(columns=columns_to_drop, errors='ignore')
+
 tvv=df
 
 # @title Keeping Only Latest Date for Each Slug
@@ -324,7 +331,13 @@ df_bin.info()
 # @title SQLalchemy to push (FE_SIGNALS) data to aws db (mysql)
 
 # Drop columns by their index positions
-df_bin.drop(df_bin.columns[4:30], axis=1, inplace=True)
+#df_bin.drop(df_bin.columns[4:30], axis=1, inplace=True)
+
+columns_to_keep = ['m_tvv_cmf', 'id', 'timestamp', 'm_tvv_obv_1d_binary', 'd_tvv_sma9_18', 
+                   'd_tvv_ema9_18', 'd_tvv_sma21_108', 'd_tvv_ema21_108', 'slug']
+
+df_bin=df_bin[columns_to_keep]
+
 tvv_signals=df_bin
 
 # Get the latest timestamp
@@ -433,10 +446,8 @@ import numpy as np
 # Drop columns with infinite values
 pct_change = pct_change.replace([np.inf, -np.inf], np.nan)
 
-# Column names to keep. PLEASE TRIPLE CHECK THESE ARE CORRECT AND MATCH the FE_PCT_CHANGE schema you want!
-COLUMNS_TO_KEEP = ['id', 'slug', 'name', 'timestamp', 'open', 'high', 'low', 'close', 'volume', 'market_cap', 'm_pct_1d', 'd_pct_cum_ret', 'd_pct_var', 'd_pct_cvar', 'd_pct_vol_1d']
-
-pct_change = pct_change[COLUMNS_TO_KEEP]
+# Drop columns 4 to 10
+pct_change = pct_change.drop(pct_change.columns[4:10], axis=1)
 
 
 
@@ -461,13 +472,11 @@ print(f"Cell execution time: {elapsed_time_minutes:.2f} minutes")
 
 
 
-gcp_engine.dispose()
-#con.close()
 
-
-"""# end of script
+"""# end of proccess 1 
 
 """
+
 
 
  # Connection parameters
