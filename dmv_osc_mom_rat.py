@@ -1185,7 +1185,7 @@ db_port = 5432                    # PostgreSQL port
 
 # Create a SQLAlchemy engine for PostgreSQL
 gcp_engine = create_engine(f'postgresql+psycopg2://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}')
-
+oscillator.info()
 # Write the DataFrame to a new table in the database
 oscillator.to_sql('FE_OSCILLATOR', con=gcp_engine, if_exists='append', index=False)
 # Write the DataFrame to a new table in the database
