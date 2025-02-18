@@ -41,8 +41,6 @@ gcp_engine.dispose()
 
 
 
-
-
 from sqlalchemy import create_engine
 import pandas as pd
 
@@ -67,7 +65,9 @@ with gcp_engine.connect() as connection:
 gcp_engine.dispose()
 
 
-# @title  Enhancing Function Definition Through Grouping and Indexing Techniques  
+#hourly
+
+# @title  Enhancing Function Definition Through Grouping and Indexing Techniques
 df=all_coins_ohlcv_filtered
 df.set_index('symbol', inplace=True)
 # Ensure the timestamp column is in datetime format
@@ -307,15 +307,8 @@ df = df[df['timestamp'] >= start_date]
 
 # @title SQLalchemy to push (FE_SIGNALS) data to aws db (mysql)
 
-# @title SQLalchemy to push (FE) data to aws db (mysql)
-COLUMNS_TO_KEEP_MOMENTUM = [
-    'id', 'slug', 'name', 'timestamp', 'open', 'high', 'low', 'close', 'volume', 'market_cap', 
-    'm_pct_1d', 'm_mom_rsi_9', 'm_mom_rsi_18', 'm_mom_rsi_27', 'm_mom_rsi_54', 'm_mom_rsi_108', 
-    'sma_14', 'sma_14_normalized', 'm_mom_roc', 'm_mom_williams_%', 'm_mom_smi', 'm_mom_cmo', 
-    'm_mom_mom', 'm_mom_tsi'
-]
-
-df=df[COLUMNS_TO_KEEP_MOMENTUM]
+# Drop columns by their index positions
+df.drop(df.columns[4:10], axis=1, inplace=True)
 momentum=df
 
 # Get the latest timestamp
@@ -336,6 +329,7 @@ momentum.to_sql('FE_MOMENTUM', con=gcp_engine, if_exists='replace', index=False)
 print("momentum DataFrame uploaded to AWS MySQL database successfully!")
 
 momentum.info()
+
 momentum_df=momentum
 
 # @title Momentum Binary Signals
@@ -621,9 +615,18 @@ df = df.groupby('slug').apply(calculate_trix).reset_index(level=0, drop=True)
 
 df.info(0)
 
+COLUMNS_TO_KEEP = [
+    'id', 'slug', 'name',  'timestamp', 
+    'open', 'high', 'low', 'close', 'volume', 'market_cap', 
+    'm_pct_1d', 'd_pct_cum_ret', 'EMA_12', 'EMA_26', 'MACD', 'Signal', 
+    'TP', 'SMA_TP', 'MAD', 'CCI', 'TR', '+DM', '-DM', 'Smoothed_TR', 
+    'Smoothed_+DM', 'Smoothed_-DM', '+DI', '-DI', 'DX', 'ADX', 'prev_close', 
+    'BP', 'Avg_BP_short', 'Avg_TR_short', 'Avg_BP_intermediate', 
+    'Avg_TR_intermediate', 'Avg_BP_long', 'Avg_TR_long', 'UO', 'MP', 
+    'SMA_5', 'SMA_34', 'AO', 'EMA1', 'EMA2', 'EMA3', 'TRIX'
+]
 
 
-oscillator=df
 
 # Get the latest timestamp
 latest_timestamp = df['timestamp'].max()
@@ -633,6 +636,8 @@ df = df[df['timestamp'] == latest_timestamp]
 
 # Replace infinite values with NaN
 oscillator = df.replace([np.inf, -np.inf], np.nan) # Replace inf values before pushing to SQL
+
+oscillator=df[COLUMNS_TO_KEEP]
 
 # Create a SQLAlchemy engine to connect to the MySQL database
 #engine = create_engine('mysql+mysqlconnector://yogass09:jaimaakamakhya@dbcp.cry66wamma47.ap-south-1.rds.amazonaws.com:3306/dbcp')
@@ -731,10 +736,14 @@ df_oscillator_bin.head()
 
 # @title SQLalchemy to push (FE_SIGNALS) data to aws db (mysql)
 
-# Drop columns by their index positions
-df_oscillator_bin.drop(df_oscillator_bin.columns[4:52], axis=1, inplace=True)
+COLUMNS_TO_KEEP = [
+    'id', 'slug', 'name', 'timestamp', 
+    'm_osc_macd_crossover_bin', 'm_osc_cci_bin', 
+    'm_osc_adx_bin', 'm_osc_uo_bin', 'm_osc_ao_bin', 'm_osc_trix_bin'
+]
 
 
+df_oscillator_bin=df_oscillator_bin[COLUMNS_TO_KEEP]
 # Get the latest timestamp
 latest_timestamp = df_oscillator_bin['timestamp'].max()
 
@@ -1076,16 +1085,18 @@ ratios = pd.merge(ratios, df_oscillator_bin[['slug', 'id', 'name','timestamp']],
 
 # Replace infinite values with NaN
 ratios = ratios.replace([np.inf, -np.inf], np.nan) # Replace inf values before pushing to SQL
-
+ratios_df=ratios
 # Create a SQLAlchemy engine to connect to the MySQL database
 #engine = create_engine('mysql+mysqlconnector://yogass09:jaimaakamakhya@dbcp.cry66wamma47.ap-south-1.rds.amazonaws.com:3306/dbcp')
 
 # Write the DataFrame to a new table in the database
 ratios.to_sql('FE_RATIOS', con=gcp_engine, if_exists='replace', index=False)
-ratios_df=ratios
+
 print("FE_RATIOS DataFrame uploaded to AWS MySQL database successfully!")
 
 ratios.info()
+
+
 
 # @title Ratios Binanry Signals
 # Create a new column 'alpha_signal' and initialize it with 0
@@ -1159,7 +1170,6 @@ elapsed_time_minutes = elapsed_time_seconds / 60
 print(f"Cell execution time: {elapsed_time_minutes:.2f} minutes")
 
 gcp_engine.dispose()
-
 
 """# end of script
 
