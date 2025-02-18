@@ -1,7 +1,6 @@
 name: test_gcp_hourly
 
 on:
-  schedule:
   workflow_dispatch: {}
 
 jobs:
